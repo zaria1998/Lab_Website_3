@@ -1,0 +1,78 @@
+//- player-info.pug
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+	br
+	div.row
+		div.col-4
+			div.card
+				- let image_src
+
+				
+				if (player_selected)
+					-image_src = '../' + player_selected.img_src;
+				else 
+					-image_src = '../../resources/img/helmet.jpg'
+
+				img.card-img-top#player_img(src= image_src, alt="Football Player")
+				div.card-body.mx-auto
+					form.form(action="/player_info/select_player" ,  method="get")
+						select.custom-select(name="player_choice" , onchange="this.form.submit()")
+							
+							option(selected, disabled) Select Player
+
+							
+							if (player_all)
+								for player in player_all
+									// dropdown button
+									if (player_selected  && player.id == player_selected.id) 
+										option(selected, value=player.id)=player.name
+									else
+										option(value=player.id)=player.name
+
+		div.col-8
+			div.table-responsive
+				table.table
+					
+					//  Set info
+					if (player_selected)
+						tr
+							th Year
+							td= player_selected.year
+						tr
+							th Major
+							td= player_selected.major
+						tr
+							th Games Played
+							td= player_games.count
+						tr
+							td='Passing Yards: ' + player_selected.passing_yards
+							td='Avg. Passing Yards: ' + parseInt(player_selected.passing_yards/player_games.count)
+						tr
+							td='Rushing Yards: ' + player_selected.rushing_yards
+							td='Avg. Rushing Yards: ' + parseInt(player_selected.rushing_yards/player_games.count)
+						tr
+							td='Receiving Yards: ' + player_selected.receiving_yards
+							td='Avg. Receiving Yards: ' + parseInt(player_selected.receiving_yards/player_games.count)
+					else
+						tr
+							th Year
+							td ?
+						tr
+							th Major
+							td ?
+						tr
+							th Games Played
+							td ?
+						tr
+							td Passing Yards:
+							td Avg. Passing Yards:
+						tr
+							td Rushing Yards: 
+							td Avg. Rushing Yards:
+						tr
+							td Receiving Yards:
+							td Avg. Receiving Yards:
+
+include ../partials/footer.pug
